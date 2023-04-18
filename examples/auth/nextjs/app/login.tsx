@@ -1,12 +1,13 @@
 "use client";
 
-import { useSupabase } from "./supabase-provider";
+import { useSelector } from 'react-redux';
+import { supabase } from "./supabase-provider";
 import { useDispatch } from 'react-redux';
 import { setUser, setSession } from "./components/auth/store";
 
 export default function Login() {
-  const { supabase } = useSupabase();
   const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.auth.user);
 
   const handleSignUp = async () => {
     await supabase.auth.signUp({
@@ -37,7 +38,18 @@ export default function Login() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+
+    dispatch(setUser(null));
+    dispatch(setSession(null));
   };
+
+  if (user) {
+    return (
+      <div>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+    );
+  }
 
   return (
     <div>

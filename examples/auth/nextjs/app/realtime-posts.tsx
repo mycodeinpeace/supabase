@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSupabase } from "./supabase-provider";
+import { supabase } from "./supabase-provider";
 
 import type { Database } from "@/lib/database.types";
 import { useSelector } from 'react-redux';
@@ -14,7 +14,6 @@ export default function RealtimePosts({
   serverPosts: Post[];
 }) {
   const [posts, setPosts] = useState(serverPosts);
-  const { supabase } = useSupabase();
   const user = useSelector((state: any) => state.auth.user);
 
   useEffect(() => {
