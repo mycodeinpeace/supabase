@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSupabase } from "./supabase-provider";
 
 import type { Database } from "@/lib/database.types";
+import { useSelector } from 'react-redux';
 
 type Post = Database["public"]["Tables"]["posts"]["Row"];
 
@@ -14,6 +15,7 @@ export default function RealtimePosts({
 }) {
   const [posts, setPosts] = useState(serverPosts);
   const { supabase } = useSupabase();
+  const user = useSelector((state: any) => state.auth.user);
 
   useEffect(() => {
     setPosts(serverPosts);
@@ -34,5 +36,8 @@ export default function RealtimePosts({
     };
   }, [supabase, setPosts, posts]);
 
+  if (user)
   return <pre>{JSON.stringify(posts, null, 2)}</pre>;
+
+  return <pre>Empty</pre>;
 }
